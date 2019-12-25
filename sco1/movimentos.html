@@ -8,6 +8,7 @@
     <script type="text/javascript" src="bootstrap.min.js"></script>
     <script type="text/javascript" src="chessboard-1.0.0.js"></script>
     <script type="text/javascript" src="Chess.js"></script>
+
     <link rel="stylesheet" type="text/css" href="bootstrap.css">
     <link rel="stylesheet" type="text/css" href="bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="chessboard-1.0.0.css">
@@ -20,26 +21,26 @@
     <br>
     <br>
     <div class="row" style="text-align: center;">
-        <div class="col-lg-8 col-xs-8">
+        <div class="col-lg-12 col-xs-12">
             <div class ="col-xs-2 col-md-2">
-                <img id="Peao" class="chessImage" src="img/chesspieces/wikipedia/wP.png" class="rounded-circle" name = "Peao" value="P" alt="Peão">
+                <img id="Peao" class="chessImage" src="img/chesspieces/wikipedia/wP.png" class="rounded-circle" name = "Peao" data-toggle="P" alt="Peão">
             </div>
             <div class ="col-xs-2 col-md-2">
-                <img id="Cavalo" class="chessImage" src="img/chesspieces/wikipedia/wN.png" class="rounded-circle" name = "Cavalo" value="N" alt="Cavalo">
-            </div>
-
-            <div class ="col-xs-2 col-md-2">
-                <img id="Bispo" class="chessImage" src="img/chesspieces/wikipedia/wB.png" class="rounded-circle" name = "Bispo" value="B" alt="Bispo">
-            </div>
-            <div class ="col-xs-2 col-md-2">
-                <img id="Torre" class="chessImage" src="img/chesspieces/wikipedia/wR.png" class="rounded-circle" name = "Torre" value="R" alt="Torre">
+                <img id="Cavalo" class="chessImage" src="img/chesspieces/wikipedia/wN.png" class="rounded-circle" name = "Cavalo" data-toggle="N" alt="Cavalo">
             </div>
 
             <div class ="col-xs-2 col-md-2">
-                <img id="Rainha" class="chessImage" src="img/chesspieces/wikipedia/wQ.png" class="rounded-circle" name = "Rainha" value="Q" alt="Rainha">
+                <img id="Bispo" class="chessImage" src="img/chesspieces/wikipedia/wB.png" class="rounded-circle" name = "Bispo" data-toggle="B" alt="Bispo">
             </div>
             <div class ="col-xs-2 col-md-2">
-                <img id="Rei" class="chessImage" src="img/chesspieces/wikipedia/wK.png" class="rounded-circle" name = "Rei" value="K" alt="Rei">
+                <img id="Torre" class="chessImage" src="img/chesspieces/wikipedia/wR.png" class="rounded-circle" name = "Torre" data-toggle="R" alt="Torre">
+            </div>
+
+            <div class ="col-xs-2 col-md-2">
+                <img id="Rainha" class="chessImage" src="img/chesspieces/wikipedia/wQ.png" class="rounded-circle" name = "Rainha" data-toggle="Q" alt="Rainha">
+            </div>
+            <div class ="col-xs-2 col-md-2">
+                <img id="Rei" class="chessImage" src="img/chesspieces/wikipedia/wK.png" class="rounded-circle" name = "Rei" data-toggle="K" alt="Rei">
             </div>
             <br>
             <br>
@@ -47,103 +48,303 @@
     </div>
     <br>
     <div class="row">
-        <div class="col-xs-8 col-md-8" id="mostrInfos">
-            <h1 id="titulo"> Clica nas peças para saber mais informações! </h1>
+        <div class="col-xs-6 col-md-6">
+            <h1 id="tituloPeca">Bem Vindo!</h1>
             <br>
-            <div id="mostraInfos" hidden>
-                <div class="row" style="text-align: center">
-                    <div class="col-xs-6 col-md-6">
-                        <div class="" id="textBox">
-
-                        </div>
-                    </div>
-                    <div class="col-xs-6 col-md-6">
-                        <img id="imgBranca" class="rounded-circle imgApresentation" style="background: black;">
-                        <img id="imgPreta"  class="rounded-circle imgApresentation" style="background: white;">
-                    </div>
-                </div>
+            <p id="descPeca">Aqui vais aprender mais sobre o movimento das peças! Clica em cada uma delas para saber mais!</p>
+            <div class="row" style="text-align: center;" id="video" hidden>
+                <button type="button" class="btn btn-warning" id="btn_verVideo">Ver Video</button>
             </div>
-         </div>
-        <div class="col-xs-4 col-md-4">
-            <div id="myBoard" name="myBoard" style="width: 400px"></div>
+        </div>
+
+        <div class="col-xs-6 col-md-6">
+            <div id="myBoard" name="myBoard" style="width: 400px" ></div>
         </div>
 
     </div>
+
+    <div id="myVideo" class="modal fade" role="dialog" style="background: #373632">
+        <div class="modal-dialog">
+
+            <div class="modal-content">
+                <div class="modal-header" hidden>
+                    <button type="button" class="close" data-dismiss="modal" hidden>&times;</button>
+                    <h4 class="modal-title">Video</h4>
+                </div>
+
+                <div class="modal-body">
+                    <button type="button" class="btn btn-warning" style="text-align: right;" id="btn_closeModal">Close</button>
+
+                    <video width="100%" height="100%" controls id="videoDiv">
+                        <source id="modalVideo" src="Video/Pawn.mp4" type="video/mp4">
+                    </video>
+
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+<input type="hidden" id="selectedPiece"/>
 </body>
 <script>
-    var timer;
 
     var config = {
         position: 'start'
     }
+    var game = new Chess();
+    var board = Chessboard('myBoard');
+    var whiteSquareGrey = '#a9a9a9'
+    var blackSquareGrey = '#696969'
 
-    function piscar(id){
-            $('#'+id).fadeOut(1000);
-            $('#'+id).fadeIn(1000);
-    }
-
-    function randomMoves(game,board){
-        function makeRandomMove () {
-            var possibleMoves = game.moves();
-
-            var randomIdx = Math.floor(Math.random() * possibleMoves.length)
-            game.move(possibleMoves[randomIdx]);
-            board.position(game.fen());
-
-            timer =  window.setTimeout(makeRandomMove, 2000);
-        }
-
-        window.setTimeout(makeRandomMove, 1000);
-    }
 
     $(document).ready(function(){
-        $(".chessImage").mouseover(function(){
-           $(".chessImage").css('border-color', "white");
-           $("#"+this.name).css('border-color', "red");
-           $(this).addClass('flipped');
-    }).mouseleave(function(){
 
-    });
+        var int1, int2, int3 =0;
+        var positions = {};
+        $(".chessImage").each(function(idx,el){
+            $("#"+this.id).css("opacity","0.2");
 
-        var game = new Chess();
-        var board = Chessboard('myBoard',  config);
+            $("#"+this.id).click(function(){
+                removeGreySquares();
+                $("#" + this.id).css("opacity", "1");
+                $("#selectedPiece").val(this.dataset.toggle);
+                let peca = "w"+this.dataset.toggle;
+                let array = getArrayPelaPeca(peca);
+                positions = {};
+                for(let i=0; i<array.length; i++){
+                    let lPeca = "w"+this.dataset.toggle;
+                    positions[array[i]] = lPeca;
+                    validaMovimentos(array[i], lPeca)
 
-        $(".chessImage").click(function(){
-            $("#"+this.name).css('border-color', "green");
-            $("#titulo").text( this.name);
-            $("#mostraInfos").attr("hidden",false);
-            $("#imgBranca").attr("src","img/w"+this.getAttribute("value")+".jpg");
-            $("#imgPreta").attr("src","img/b"+this.getAttribute("value")+".jpg");
-            setInterval(1000,function(){
-                piscar("imgBranca");
-                piscar("imgPreta");
+                }
+                peca = "b" + this.dataset.toggle;
+                let arrayBlack = getArrayPelaPeca(peca);
+
+                for(let i=0; i<arrayBlack.length; i++){
+                    let lPeca = "b"+this.dataset.toggle;
+                    positions[arrayBlack[i]] = lPeca;
+
+
+                }
+                clearInterval(int1);
+                clearInterval(int2);
+                clearInterval(int3);
+                board.clear();
+                board.position(positions,true);
+                if("w"+this.dataset.toggle == "wP"){
+                    $("#tituloPeca").text("Este é o Peão");
+                    $("#descPeca").text(" O Peão é uma peça de menor valor (1 - 10) no entanto muito importante no jogo de xadrez. O Peão move-se verticalmente, podendo avançar 1 ou duas casas na casa de partida, e apenas 1 casa depois do primeiro movimento. Para além disso, o peão captura outras peças na diagonal. Se conseguires chegar ao outro lado do tabuleiro, podes trocar esse peão por outra peça qualquer (Excepto o rei)");
+                    $("#video").attr("hidden",false);
+                    $("#modalVideo")[0].src="Video/Pawn.mp4";
+                    document.getElementById("videoDiv").load();
+                    int1= setInterval(function () {
+                        board.move("e2-e4");
+
+                        removeGreySquares();
+                    },2000);
+
+                    int2 = setInterval(function () {
+                        board.move("f7-f5");
+
+
+                        board.move("f2-f3");
+
+
+                        removeGreySquares();
+                    },5000);
+
+                    int3 = setInterval(function () {
+                        board.move("e4-f5");
+                        removeGreySquares();
+                    },7000);
+
+                }else if(this.dataset.toggle == "N"){
+                    $("#tituloPeca").text("Este é o Cavalo");
+                    $("#descPeca").text("Este é o Cavalo. É a unica peça do tabuleiro que pode saltar por cima das outras. Esta peça tem um valor de 3 pontos (3 em 10) e tem um tipo de movimento especial. O movimento desta peça é em 'L' como podes ver no exemplo. Para capturar, ele captura se existir alguma peça adversária na ultima posição que ocupa.");
+                    $("#video").attr("hidden",false);
+                    $("#modalVideo")[0].src="Video/Knight.mp4";
+                    document.getElementById("videoDiv").load();
+                    int1 = setInterval(function () {
+                        removeGreySquares();
+                        board.move("g1-f3");
+                        var arrayM = ["e5","g5", "h4", "h2", "g1", "e1", "d2", "d4"];
+                        arrayGrey(arrayM);
+
+                    },5000);
+
+
+
+                }else if(this.dataset.toggle == "B") {
+                    $("#tituloPeca").text("Este é o Bispo");
+                    $("#descPeca").text("Este é o Bispo. Esta peça tem um valor de 3 pontos (3 em 10). Esta peça move-se nas diagonais e para capturar, basta ocupar a casa onde a peça adversária está. Pode-se mover para trás e para a frente. Para perceber melhor, vê o video.");
+                    $("#video").attr("hidden", false);
+
+
+
+                    int1 = setInterval(function () {
+                        board.move("f1-c4");
+                        let arrayB = ["a2", "b3", "d5", "e6", "f7", "g8", "a6", "b5", "d3", "e2", "f1"];
+                        arrayGrey(arrayB);
+                    },5000);
+                }else if(this.dataset.toggle == "R"){
+                    $("#tituloPeca").text("Esta é a Torre");
+                    $("#descPeca").text("");
+                    $("#video").attr("hidden", false);
+
+
+
+                    int1 = setInterval(function () {
+                        board.move("h1-e1");
+
+                    },5000);
+
+                    int2 = setInterval(function () {
+                        board.move("e1-e4");
+                        board.move("a1-a8");
+
+                        let arrayB = ["e1", "e2", "e3", "e5", "e6", "e7", "e8", "a4", "b4", "c4", "d4","f4", "g4", "h4"];
+                        arrayGrey(arrayB);
+
+                    },6000);
+                }else if(this.dataset.toggle == "Q"){
+                    $("#tituloPeca").text("Esta é a Rainha");
+                    $("#descPeca").text("");
+                    $("#video").attr("hidden", false);
+
+
+
+                    int1 = setInterval(function () {
+                        board.move("d1-d8");
+                    },5000);
+
+                    int2 = setInterval(function () {
+
+                        board.move("d8-d4");
+
+                        let arrayQ = ["d1", "d2", "d3", "d5", "d6", "d7", "d8", "a4", "b4", "c5", "c4", "e4","f4", "g4", "h4", "a7", "b6", "d5", "e3","f2","g1" , "a1", "b2", "c3","e5","f6","g7","h8"];
+                        arrayGrey(arrayQ);
+
+                    },6000);
+
+                }
+
 
             });
-            game.clear();
-            clearTimeout(timer);
+            $("#"+this.id).mouseover(function(){
+                $("#" + this.id).css("opacity", "1");
+            }).mouseout(function(){
+                $(".chessImage").each(function(idx,el) {
 
+                    if (el.dataset.toggle != $("#selectedPiece").val()) {
+                        $("#" + this.id).css("opacity", "0.2");
+                    }else{
+                        $("#" + this.id).css("opacity", "1");
 
-            if(this.name=="Peao"){
-                game.load("1k6/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/2K5 b - - 0 1");
-                $("#textBox").append("<p>Este é o peão. O Peão é uma peça menor do xadrez e move-se de uma forma especial. Na primeira jogada pode avançar 1 ou 2 casas, a apartir daí apenas 1 casa. O seu movimento de captura é para as diagonais.  A nivel de pontuação o peão é a peça com menor valor, apenas 1 ponto, face aos 10 pontos da rainha. Quando o peão chega ao outro lado do tabuleiro, podes pedir outra peça de maior valor.</p>")
-            }else if(this.name=="Cavalo"){
-                game.load('1n2k1n1/8/8/8/8/8/8/1N2K1N1 b - - 0 1');
-            }else if(this.name=="Bispo"){
-                game.load('1b2k1b1/8/8/8/8/8/8/2B1KB2 w - - 0 1');
-            }else if(this.name=="Torre"){
-                game.load('r3k2r/8/8/8/8/8/8/R3K2R w - - 0 1');
-            }else if(this.name=="Rainha"){
-                game.load('3qk3/8/8/8/8/8/8/3QK3 b - - 0 1');
-            }else if(this.name == "Rei"){
-                game.load('8/3k4/2p5/1pP5/pP1K4/P7/8/8 b - - 0 1');
-            }
-            randomMoves(game,board);
+                    }
 
+                });
+            });
+
+        });
+
+        $("#btn_verVideo").click(function () {
+                $("#myVideo").modal('toggle');
+        });
+
+        $("#btn_closeModal").click(function () {
+            $("#modalVideo")[0].parentNode.pause()
+            $("#myVideo").find(".close").click()
+            //$("#btn_closeModal").find(".btn-default");
         });
     });
 
 
+    function getArrayPelaPeca(peca){
+        let array =[];
+        let row = 0;
+        if(peca == "wN"  || peca == "bN"){
+            row = 1;
+            if(peca == "bN"){
+                row = 8;
+            }else{
+                row = 1;
+            }
+            array = ["b"+row,"g"+row];
 
 
+
+        }else if(peca == "bP"  || peca == "wP"){
+            row = 1;
+            if(peca =="bP"){
+                row = 7;
+            }else{
+                row = 2;
+            }
+            array = ["a"+row,"b"+row,"c"+row,"d"+row,"e"+row,"f"+row,"g"+row,"h"+row];
+        }else if(peca == "wR" || peca == "bR"){
+            if(peca =="wR"){
+                row = 1;
+            }else{
+                row = 8;
+            }
+            array = ["a"+row, "h"+row];
+        }else if(peca == "wB" || peca == "bB"){
+            if(peca == "wB"){
+                row = 1;
+            }else{
+                row = 8;
+            }
+            array=["c"+row, "f"+row];
+        }else if(peca == "wQ" || peca =="bQ"){
+            if(peca == "wQ"){
+                row=1;
+            }else{
+                row = 8;
+            }
+            array = ["d"+row];
+        }else if(peca == "wK" || peca == "bK"){
+            if(peca == "wK"){
+                row = 1;
+            }else{
+                row = 8;
+            }
+            array = ["e"+row];
+        }
+
+        return array;
+    }
+
+
+    function removeGreySquares () {
+        $('#myBoard .square-55d63').css('background', '')
+    }
+
+    function greySquare (square) {
+        var $square = $('#myBoard .square-' + square)
+
+        var background = whiteSquareGrey
+        if ($square.hasClass('black-3c85d')) {
+            background = blackSquareGrey
+        }
+
+        $square.css('background', background)
+    }
+
+    function validaMovimentos(square, piece){
+        var moves = game.moves({
+            square: square
+        });
+
+        for (var i = 0; i < moves.length; i++) {
+            greySquare(moves[i].to)
+        }
+    }
+
+    function arrayGrey(array){
+        for(let i=0; i<array.length; i++){
+            greySquare(array[i]);
+        }
+    }
 </script>
 </html>
