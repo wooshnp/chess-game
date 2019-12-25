@@ -22,7 +22,13 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/Roque" />
+    <property name="nodejs_package_manager_path" value="npm" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\mauro\OneDrive\Documentos\GitHub\chess-game\Roque" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -46,7 +52,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1577289427751</updated>
-      <workItem from="1577289430077" duration="2695000" />
+      <workItem from="1577289430077" duration="7236000" />
     </task>
     <servers />
   </component>

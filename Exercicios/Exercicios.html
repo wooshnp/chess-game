@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Movimentos - ChessEst</title>
+    <script type="text/javascript" src="jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="bootstrap.js"></script>
+    <script type="text/javascript" src="bootstrap.min.js"></script>
+    <script type="text/javascript" src="chessboard-1.0.0.js"></script>
+    <script type="text/javascript" src="Chess.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="chessboard-1.0.0.css">
+    <link rel="stylesheet" type="text/css" href="myStyle.css">
+</head>
+<body>
+
+<div class="alert alert-success" role="alert" id="sucessoAlerta" hidden>
+    <h4 class="alert-heading">Muito bem!</h4>
+    <p1 class="mb-0">Conseguis-te superar este desafio com sucesso! Passa ao proximo exercicio!</p1>
+
+    <hr>
+  </div>
+
+<div class="row">
+    <h1> Exercicios </h1>
+</div>
+
+<div class="row" style="text-align: center;">
+    <div class="row">
+        <p1 id="introText" style="color: white"> Escolhe a peça para fazer os exercicios! </p1>
+    </div>
+    <div class="col-lg-3 col-xs-3" align="center">
+        <div class="row">
+            <img id="Peao" class="chessImage" src="img/chesspieces/wikipedia/wP.png" class="rounded-circle" name = "Peao" value="P" data-toggle="wP" alt="Peão">
+        </div>
+        <div class="row">
+            <img id="Cavalo" class="chessImage" src="img/chesspieces/wikipedia/wN.png" class="rounded-circle" name = "Cavalo" value="N" data-toggle="wN" alt="Cavalo">
+        </div>
+
+        <div class="row">
+            <img id="Bispo" class="chessImage" src="img/chesspieces/wikipedia/wB.png" class="rounded-circle" name = "Bispo" value="B" data-toggle="wB"  alt="Bispo">
+        </div>
+        <div class="row">
+            <img id="Torre" class="chessImage" src="img/chesspieces/wikipedia/wR.png" class="rounded-circle" name = "Torre" value="R" data-toggle="wR" alt="Torre">
+        </div>
+
+        <div class="row">
+            <img id="Rainha" class="chessImage" src="img/chesspieces/wikipedia/wQ.png" class="rounded-circle" name = "Rainha" value="Q" data-toggle="wQ" alt="Rainha">
+        </div>
+        <div class="row">
+            <img id="Rei" class="chessImage" src="img/chesspieces/wikipedia/wK.png" class="rounded-circle" name = "Rei" value="K" data-toggle="wK" alt="Rei">
+        </div>
+
+    </div>
+    <div class="col-lg-6 col-xs-6" align="center">
+        <div id="myBoard" name="myBoard" style="width: 450px"></div>
+    </div>
+    <div class="col-lg-3 col-xs3" align="center">
+        <h1 id="title"></h1>
+        <p id="descricao"></p>
+
+        <button type="button" class="btn btn-warning" id="btnExercicio" hidden>Próximo</button>
+    </div>
+
+
+
+<input type="hidden" id="selectedPiece" />
+
+    <input type="hidden" id="exercicio" />
+
+    <input type="hidden" id="jogada" />
+
+
+</body>
+
+</html>
+<script>
+    var game = new Chess();
+    var config = {
+        draggable: true,
+        position: 'start',
+        onDragStart: onDragStart,
+        onDrop: onDrop
+    }
+    var board = Chessboard('myBoard',config);
+    $(document).ready(function() {
+        var rightMoviments = [];
+
+        $(".chessImage").each(function(idx,el) {
+            $("#" + this.id).css("opacity", "0.2");
+
+            $("#" + this.id).click(function () {
+
+                $("#" + this.id).css("opacity", "1");
+                $("#selectedPiece").val(this.dataset.toggle);
+                let peca = this.dataset.toggle;
+                $("#selectedPiece").val(peca);
+                setExercicio(peca,1);
+            });
+
+
+
+            $("#"+this.id).mouseover(function() {
+                $("#" + this.id).css("opacity", "1");
+
+            }).mouseout(function(){
+                $(".chessImage").each(function(idx,el) {
+
+                    if (el.dataset.toggle != $("#selectedPiece").val()) {
+                        $("#" + this.id).css("opacity", "0.2");
+                    }else{
+                        $("#" + this.id).css("opacity", "1");
+
+                    }
+
+                });
+
+            });
+
+        });
+
+   });
+
+
+
+    function onDragStart (source, piece, position, orientation) {
+        if (game.game_over()) return false
+
+        if (piece.search(/^b/) !== -1) return false
+    }
+
+
+    function onDrop (source, target) {
+        let peca = $("#selectedPiece").val();
+        let ex = $("#exercicio").val();
+
+        let arrayPossibilidade = [];
+        if(peca == "wP"){
+
+            if(ex == 1){
+                arrayPossibilidade = ["e4"];
+                $("#jogada").val(0);
+            }else if(ex == 2){
+                arrayPossibilidade = ["c4"];
+                $("#jogada").val(0);
+
+            }
+        }
+        let pos = parseInt($("#jogada").val() == null ? $("#jogada").val() : 0 );
+        if(target != arrayPossibilidade[pos]){
+
+            alert("Ups! Tenta outra Jogada!");
+            return 'snapback';
+        }else{
+
+            $('#sucessoAlerta').attr("hidden",false);
+            var move = game.move({
+                from: source,
+                to: target,
+            });
+            $("#btnExercicio").attr("hidden",false);
+
+        }
+
+
+    }
+
+    $("#btnExercicio").click(function () {
+        let peca = $("#selectedPiece").val();
+        $("#sucessoAlerta").attr("hidden",true);
+        let ex = parseInt($("#exercicio").val() == null ? $("#exercicio").val() : 1);
+        ex += 1;
+        setExercicio(peca, ex);
+    });
+
+    function setExercicio(peca, ex) {
+
+        if(peca == "wP"){
+            if(ex == 1){
+                board.clear();
+                board.position({"e2": "wP"});
+                $("#exercicio").val(1);
+                $("#jogada").val(0);
+                $("#descricao").text("O peão das Brancas pode andar uma ou duas casas na sua primeira jogada. Faz a jogada que coloca o peão no centro do tabuleiro.");
+            }else if(ex == 2){
+                board.clear();
+                board.position({"c2": "wP", "e3":"wP"});
+                $("#jogada").val(0);
+                $("#exercicio").val(2);
+                $("#descricao").text("As Brancas têm dois peões, mas apenas um dos peões pode andar duas casa no lance seguinte - qual deles?");
+
+            }
+
+        }
+    }
+
+
+</script>

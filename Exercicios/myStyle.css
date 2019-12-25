@@ -1,0 +1,21 @@
+body{
+    background: #373632;
+}
+
+h1 , h4 , p{
+    color: white;
+    text-align: center;
+    font-family: "Comic Sans MS", cursive, sans-serif;
+}
+
+.chessImage {
+    border-radius: 50%;
+    border: 1px solid white;
+}
+
+.imgApresentation{
+    width: 150px;
+    height: 350px;
+    border: 1px solid white;
+}
+
