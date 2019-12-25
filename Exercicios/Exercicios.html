@@ -199,6 +199,14 @@
             peca = "wN";
             ex = 1;
             $("#Cavalo").click();
+        }else if(peca == "wN" && ex == 4){
+            $("#exercicio").val(0);
+            $("#jogada").val(0);
+
+            peca = "wB";
+            ex = 1;
+            $("#Bispo").click();
+
         }
         setExercicio(peca, ex);
     });
