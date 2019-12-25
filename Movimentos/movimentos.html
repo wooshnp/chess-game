@@ -22,6 +22,11 @@
     <br>
     <div class="row" style="text-align: center;">
         <div class="col-lg-12 col-xs-12">
+
+            <div class ="col-xs-2 col-md-2">
+                <img id="Rei" class="chessImage" src="img/chesspieces/wikipedia/wK.png" class="rounded-circle" name = "Rei" data-toggle="K" alt="Rei">
+            </div>
+
             <div class ="col-xs-2 col-md-2">
                 <img id="Peao" class="chessImage" src="img/chesspieces/wikipedia/wP.png" class="rounded-circle" name = "Peao" data-toggle="P" alt="Peão">
             </div>
@@ -39,9 +44,6 @@
             <div class ="col-xs-2 col-md-2">
                 <img id="Rainha" class="chessImage" src="img/chesspieces/wikipedia/wQ.png" class="rounded-circle" name = "Rainha" data-toggle="Q" alt="Rainha">
             </div>
-            <div class ="col-xs-2 col-md-2">
-                <img id="Rei" class="chessImage" src="img/chesspieces/wikipedia/wK.png" class="rounded-circle" name = "Rei" data-toggle="K" alt="Rei">
-            </div>
             <br>
             <br>
         </div>
@@ -58,7 +60,7 @@
         </div>
 
         <div class="col-xs-6 col-md-6">
-            <div id="myBoard" name="myBoard" style="width: 400px" ></div>
+            <div id="myBoard" name="myBoard" style="width: 350px; text-align: center" ></div>
         </div>
 
     </div>
@@ -78,8 +80,6 @@
                     <video width="100%" height="100%" controls id="videoDiv">
                         <source id="modalVideo" src="Video/Pawn.mp4" type="video/mp4">
                     </video>
-
-
                 </div>
             </div>
 
@@ -99,7 +99,6 @@
 
 
     $(document).ready(function(){
-
         var int1, int2, int3 =0;
         var positions = {};
         $(".chessImage").each(function(idx,el){
@@ -179,7 +178,8 @@
                     $("#tituloPeca").text("Este é o Bispo");
                     $("#descPeca").text("Este é o Bispo. Esta peça tem um valor de 3 pontos (3 em 10). Esta peça move-se nas diagonais e para capturar, basta ocupar a casa onde a peça adversária está. Pode-se mover para trás e para a frente. Para perceber melhor, vê o video.");
                     $("#video").attr("hidden", false);
-
+                    $("#modalVideo")[0].src="Video/Bishop.mp4";
+                    document.getElementById("videoDiv").load();
 
 
                     int1 = setInterval(function () {
@@ -189,9 +189,10 @@
                     },5000);
                 }else if(this.dataset.toggle == "R"){
                     $("#tituloPeca").text("Esta é a Torre");
-                    $("#descPeca").text("");
+                    $("#descPeca").text("A Torre tem um valor de 5 pontos (em 10) e pode-se movimentar por colunas como podemos ver no exemplo. Para saberes mais sobre a torre, vê o video sobre ela.");
                     $("#video").attr("hidden", false);
-
+                    $("#modalVideo")[0].src="Video/Rook.mp4";
+                    document.getElementById("videoDiv").load();
 
 
                     int1 = setInterval(function () {
@@ -209,8 +210,10 @@
                     },6000);
                 }else if(this.dataset.toggle == "Q"){
                     $("#tituloPeca").text("Esta é a Rainha");
-                    $("#descPeca").text("");
+                    $("#descPeca").text("A rainha é a peça mais valiosa (depois do rei) com um valor de 10 pontos (10 em 10). A Rainha pode-se movimentar para todos os lados (diagonais e Laterais). A sua moviemntação torna esta peça muito forte pois pode atacar varias peças ao mesmo tempo. Para perceberes melhor sobre a rainha, vê o video sobre ela. ");
                     $("#video").attr("hidden", false);
+                    $("#modalVideo")[0].src="Video/Queen.mp4";
+                    document.getElementById("videoDiv").load();
 
 
 
@@ -226,6 +229,23 @@
                         arrayGrey(arrayQ);
 
                     },6000);
+
+                }else if(this.dataset.toggle == "K"){
+                    $("#tituloPeca").text("Este é o Rei");
+                    $("#descPeca").text(" Esta é a peça mais importante do jogo. Todo o jogo gira a volta do rei, pois o objetivo e capturar o rei adversário.  Durante o jogo o rei nao pode estar sob o ataque de outras peças e apenas pode movimentar-se 1 casa para todos os lados. Quando o rei esta a ser atacado por uma peça inimiga encontra-se em 'XEQUE'. Quando o rei está em cheque e não pode movimentar-se para casas em que nao estejam a ser atacadas, é declarado o XEQUE-MATE." );
+                    $("#video").attr("hidden", false);
+                    $("#modalVideo")[0].src="Video/King.mp4";
+                    document.getElementById("videoDiv").load();
+
+
+                    int2 = setInterval(function () {
+
+                        board.move("e1-d2");
+
+                        let arrayK = ["c1","d1","e1", "e2","e3", "d3","c3","c2"];
+                        arrayGrey(arrayK);
+
+                    },2000);
 
                 }
 
@@ -255,7 +275,6 @@
         $("#btn_closeModal").click(function () {
             $("#modalVideo")[0].parentNode.pause()
             $("#myVideo").find(".close").click()
-            //$("#btn_closeModal").find(".btn-default");
         });
     });
 
