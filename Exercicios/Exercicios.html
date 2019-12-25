@@ -87,7 +87,7 @@
     var board = Chessboard('myBoard',config);
     $(document).ready(function() {
         var rightMoviments = [];
-
+        $("#exercicio").val(1);
         $(".chessImage").each(function(idx,el) {
             $("#" + this.id).css("opacity", "0.2");
 
@@ -97,7 +97,7 @@
                 $("#selectedPiece").val(this.dataset.toggle);
                 let peca = this.dataset.toggle;
                 $("#selectedPiece").val(peca);
-                setExercicio(peca,1);
+                setExercicio(peca,$("#exercicio").val());
             });
 
 
@@ -142,13 +142,34 @@
             if(ex == 1){
                 arrayPossibilidade = ["e4"];
                 $("#jogada").val(0);
+                $("#exercicio").val(1);
             }else if(ex == 2){
                 arrayPossibilidade = ["c4"];
                 $("#jogada").val(0);
+                $("#exercicio").val(2);
+            }else if(ex == 3){
+                arrayPossibilidade = ["e4"];
+                $("#jogada").val(0);
+                $("#exercicio").val(3);
+            }
+        }else if(peca == "wN"){
+            if(ex == 1){
+                arrayPossibilidade = ["g8"];
+                $("#jogada").val(0);
+                $("#exercicio").val(1);
 
+            }else if(ex == 2){
+                arrayPossibilidade = ["e4"];
+                $("#jogada").val(0);
+                $("#exercicio").val(2);
+
+            }else if(ex == 3){
+                arrayPossibilidade = ["e4"];
+                $("#jogada").val(0);
+                $("#exercicio").val(3);
             }
         }
-        let pos = parseInt($("#jogada").val() == null ? $("#jogada").val() : 0 );
+        let pos = parseInt($("#jogada").val() != null ? $("#jogada").val() : 0 );
         if(target != arrayPossibilidade[pos]){
 
             alert("Ups! Tenta outra Jogada!");
@@ -161,7 +182,6 @@
                 to: target,
             });
             $("#btnExercicio").attr("hidden",false);
-
         }
 
 
@@ -170,8 +190,16 @@
     $("#btnExercicio").click(function () {
         let peca = $("#selectedPiece").val();
         $("#sucessoAlerta").attr("hidden",true);
-        let ex = parseInt($("#exercicio").val() == null ? $("#exercicio").val() : 1);
+        let ex = parseInt($("#exercicio").val() != null ? $("#exercicio").val() : 1);
         ex += 1;
+        if(peca == "wP" && ex == 4){
+            $("#exercicio").val(0);
+            $("#jogada").val(0);
+
+            peca = "wN";
+            ex = 1;
+            $("#Cavalo").click();
+        }
         setExercicio(peca, ex);
     });
 
@@ -191,8 +219,38 @@
                 $("#exercicio").val(2);
                 $("#descricao").text("As Brancas têm dois peões, mas apenas um dos peões pode andar duas casa no lance seguinte - qual deles?");
 
+            }else if(ex == 3){
+                board.clear();
+                board.position({"a2": "wP", "e3": "wP", "d5": "bR", "f5": "bR"});
+                $("#jogada").val(0);
+                $("#exercicio").val(3);
+                $("#descricao").text("As Brancas têm dois peões, mas apenas um é uma boa jogada - Qual deles?");
+
             }
 
+        }else  if(peca == "wN"){
+            if(ex == 1){
+                board.clear();
+                board.position({"h6": "wN"});
+                $("#exercicio").val(1);
+                $("#jogada").val(0);
+                $("#descricao").text("Move o cavalo para estar no topo do tabuleiro em apenas 1 jogada!");
+
+            }else if(ex == 2){
+                board.clear();
+                board.position({"b3" : "wR", "c4" : "wB" , "f3" : "wK", "d2" : "wN"});
+                $("#exercicio").val(2);
+                $("#jogada").val(0);
+                $("#descricao").text("Faz o única jogada com o cavalo em frente que leva o cavalo para o centro.");
+
+            }else if(ex == 3){
+                board.clear();
+                board.position({"c5" : "bQ", "d6" : "bR" , "f6" : "bR", "f2" : "wN", "g5": "bK"});
+                $("#exercicio").val(2);
+                $("#jogada").val(0);
+                $("#descricao").text("Faz o única jogada com o cavalo de forma a atingir todas as peças do tabuleiro!");
+
+            }
         }
     }
 
