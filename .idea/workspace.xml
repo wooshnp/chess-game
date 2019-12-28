@@ -22,11 +22,12 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/Roque" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/Montar Tabuleiro" />
     <property name="nodejs_package_manager_path" value="npm" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\mauro\OneDrive\Documentos\GitHub\chess-game\Montar Tabuleiro" />
       <recent name="C:\Users\mauro\OneDrive\Documentos\GitHub\chess-game\Roque" />
     </key>
   </component>
@@ -53,6 +54,9 @@
       <option name="presentableId" value="Default" />
       <updated>1577289427751</updated>
       <workItem from="1577289430077" duration="12400000" />
+      <workItem from="1577383653510" duration="567000" />
+      <workItem from="1577455262673" duration="598000" />
+      <workItem from="1577528850455" duration="9786000" />
     </task>
     <servers />
   </component>
@@ -64,7 +68,9 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>
