@@ -124,7 +124,7 @@ var Chess = function(fen) {
     };
 
     var board = new Array(128);
-    var kings = { w: "red", b: "red" };
+    var kings = { w: EMPTY, b: EMPTY };
     var turn = WHITE;
     var castling = { w: 0, b: 0 };
     var ep_square = EMPTY;
@@ -730,22 +730,18 @@ var Chess = function(fen) {
     }
 
     function king_attacked(color) {
-
         return attacked(swap_color(color), kings[color]);
     }
 
     function in_check() {
-
         return king_attacked(turn);
     }
 
     function in_checkmate() {
-
         return in_check() && generate_moves().length === 0;
     }
 
     function in_stalemate() {
-
         return !in_check() && generate_moves().length === 0;
     }
 

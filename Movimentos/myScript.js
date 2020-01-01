@@ -17,6 +17,8 @@ $(document).ready(function(){
         $("#"+this.id).click(function(){
             removeGreySquares();
             $("#" + this.id).css("opacity", "1");
+            $("#" + this.id).css("border-color", "GreenYellow");
+
             $("#selectedPiece").val(this.dataset.toggle);
             let peca = "w"+this.dataset.toggle;
             let array = getArrayPelaPeca(peca);
@@ -70,7 +72,7 @@ $(document).ready(function(){
 
             }else if(this.dataset.toggle == "N"){
                 $("#tituloPeca").text("Este é o Cavalo");
-                $("#descPeca").text("Este é o Cavalo. É a unica peça do tabuleiro que pode saltar por cima das outras. Esta peça tem um valor de 3 pontos (3 em 10) e tem um tipo de movimento especial. O movimento desta peça é em 'L' como podes ver no exemplo. Para capturar, ele captura se existir alguma peça adversária na ultima posição que ocupa.");
+                $("#descPeca").text("Este é o Cavalo. É a unica peça do tabuleiro que pode saltar por cima das outras. Esta peça tem um valor de 3 pontos (3 em 10) e tem um tipo de movimento especial. O movimento desta peça é em 'L' como podes ver no exemplo. Para capturar, basta movimentar o cavalo para o destino onde existe a peça (dentro dos movimentos possiveis) e retirar a peça adversária do lugar e substituindo assim pelo cavalo.");
                 $("#video").attr("hidden",false);
                 $("#modalVideo")[0].src="Video/Knight.mp4";
                 document.getElementById("videoDiv").load();
@@ -146,31 +148,23 @@ $(document).ready(function(){
                 $("#video").attr("hidden", false);
                 $("#modalVideo")[0].src="Video/King.mp4";
                 document.getElementById("videoDiv").load();
-
-
                 int2 = setInterval(function () {
-
                     board.move("e1-d2");
-
                     let arrayK = ["c1","d1","e1", "e2","e3", "d3","c3","c2"];
                     arrayGrey(arrayK);
-
                 },2000);
-
             }
-
-
         });
         $("#"+this.id).mouseover(function(){
             $("#" + this.id).css("opacity", "1");
         }).mouseout(function(){
             $(".chessImage").each(function(idx,el) {
-
                 if (el.dataset.toggle != $("#selectedPiece").val()) {
                     $("#" + this.id).css("opacity", "0.2");
+                    $("#" + this.id).css("border-color", "white");
                 }else{
                     $("#" + this.id).css("opacity", "1");
-
+                    $("#" + this.id).css("border-color", "GreenYellow");
                 }
 
             });

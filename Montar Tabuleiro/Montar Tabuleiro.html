@@ -8,75 +8,65 @@
     <script type="text/javascript" src="bootstrap.min.js"></script>
     <script type="text/javascript" src="chessboard-1.0.0.js"></script>
     <script type="text/javascript" src="Chess.js"></script>
-	<script type="text/javascript" src="myScriptChess.js"></script>
-    <script type="text/javascript" src="myScript.js"></script>
+    <!--script type="text/javascript" src="SCORM_2004_APIWrapper.js"></script-->
 
     <link rel="stylesheet" type="text/css" href="bootstrap.css">
     <link rel="stylesheet" type="text/css" href="bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="chessboard-1.0.0.css">
     <link rel="stylesheet" type="text/css" href="myStyle.css">
 </head>
-<body>
-    <div class="row">
-        <h1> Montar o Tabuleiro </h1>
-	</div>
-    
-    <div class="row" style="text-align: center;">
+<body> <!--onload="doInitialize()" onunload ="doTerminate()"-->
+
+
 <div class="row">
-			<p1 id="introText" style="color: white"> Passa sobre as peças para saber onde as colocar. Clica para mete-las no tabuleiro, <br> No final, irás colocá-las sem ajuda, por isso, está atento!  </p1>
-	</div>	
-	<div class="col-lg-3 col-xs-3" align="center">
-                <div class="row">
-                        <img id="Peao" class="chessImage" src="img/chesspieces/wikipedia/wP.png" class="rounded-circle" name = "Peao" value="P" data-toggle="wP" alt="Peão">
-                </div>
-                <div class="row">
-                        <img id="Cavalo" class="chessImage" src="img/chesspieces/wikipedia/wN.png" class="rounded-circle" name = "Cavalo" value="N" data-toggle="wN" alt="Cavalo">
-                </div>
+    <h1> Montar o Tabuleiro </h1>
+</div>
 
-                <div class="row">
-                        <img id="Bispo" class="chessImage" src="img/chesspieces/wikipedia/wB.png" class="rounded-circle" name = "Bispo" value="B" data-toggle="wB"  alt="Bispo">
-                    </div>
-                <div class="row">
-                        <img id="Torre" class="chessImage" src="img/chesspieces/wikipedia/wR.png" class="rounded-circle" name = "Torre" value="R" data-toggle="wR" alt="Torre">
-                    </div>
-
-                <div class="row">
-                        <img id="Rainha" class="chessImage" src="img/chesspieces/wikipedia/wQ.png" class="rounded-circle" name = "Rainha" value="Q" data-toggle="wQ" alt="Rainha">
-                    </div>
-                <div class="row">
-                        <img id="Rei" class="chessImage" src="img/chesspieces/wikipedia/wK.png" class="rounded-circle" name = "Rei" value="K" data-toggle="wK" alt="Rei">
-                </div>
-
-			</div>
-			<div class="col-lg-6 col-xs-6" align="center">
-                <div id="myBoard" name="myBoard" style="width: 450px"></div>
-			</div>
-            <div class="col-lg-3 col-xs-3" align="center">
-                <div class="row">
-                    <img id="bPeao" class="chessImage" src="img/chesspieces/wikipedia/bP.png" class="rounded-circle" name = "Peao" value="P" data-toggle="bP" alt="Peão">
-                </div>
-                <div class="row">
-                    <img id="bCavalo" class="chessImage" src="img/chesspieces/wikipedia/bN.png" class="rounded-circle" name = "Cavalo" value="N" data-toggle="bN" alt="Cavalo">
-                </div>
-
-                <div class="row">
-                    <img id="bBispo" class="chessImage" src="img/chesspieces/wikipedia/bB.png" class="rounded-circle" name = "Bispo" value="B" data-toggle="bB"  alt="Bispo">
-                </div>
-                <div class="row">
-                    <img id="bTorre" class="chessImage" src="img/chesspieces/wikipedia/bR.png" class="rounded-circle" name = "Torre" value="R" data-toggle="bR" alt="Torre">
-                </div>
-
-                <div class="row">
-                    <img id="bRainha" class="chessImage" src="img/chesspieces/wikipedia/bQ.png" class="rounded-circle" name = "Rainha" value="Q" data-toggle="bQ" alt="Rainha">
-                </div>
-                <div class="row">
-                    <img id="bRei" class="chessImage" src="img/chesspieces/wikipedia/bK.png" class="rounded-circle" name = "Rei" value="K" data-toggle="bK" alt="Rei">
-                </div>
-
-            </div>
-		</div>
+<div class="row" style="text-align: center;">
+    <div class="col-lg-3 col-xs-3" align="center">
+       <div class="row">
+           <h5>Percentagem deste exercicio</h5>
+           <div class="progress" style="margin-left: 50px">
+                <div id="progress-bar" class="progress-bar" role="progressbar" aria-valuenow="70"
+                    aria-valuemin="0" aria-valuemax="100" style="width:0%">
+                   <span class="sr-only" id="descPercentagem">0%</span>
+               </div>
+           </div>
+       </div>
     </div>
-    <input type="hidden" id="selectedPiece"/>
-    <input type="hidden" id="arrayPositions"/>
+    <div class="col-lg-6 col-xs-6" align="center">
+        <div id="myBoard" name="myBoard" style="width: 450px"></div>
+    </div>
+    <div class="col-lg-3 col-xs-3" align="center" style="margin-left: -50px;">
+        <div class="row">
+            <div class="alert alert-success" role="alert" id="sucessoAlerta" hidden>
+                <h4 class="alert-heading">Muito bem!</h4>
+                <p1 class="mb-0">Conseguiste montar o tabuleiro Passa para o proxima secção do curso!</p1>
+            </div>
+            <div class="alert alert-danger" role="alert" id="erroAlerta" hidden>
+                <h4 class="alert-heading">Ups!!</h4>
+                <p1 class="mb-0">Tenta novamente!</p1>
+            </div>
+        </div>
+        <div class="row">
+            <h1 id="title"></h1>
+        </div>
+        <div class="row">
+            <p id="descricao"></p>
+            <button type="button" class="btn btn-warning" id="btnStart" hidden>Começar</button>
+
+        </div>
+
+        </div>
+
+
+</div>
+
+<input type="hidden" id="selectedPiece" />
+<input type="hidden" id="source" />
+<input type="hidden" id="exercicio" />
+<input type="hidden" id="jogada" />
 </body>
+<script type="text/javascript" src="myScript.js"></script>
+
 </html>

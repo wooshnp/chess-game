@@ -31,7 +31,6 @@
             const answerContainer = answerContainers[questionNumber];
             const selector = `input[name=question${questionNumber}]:checked`;
             const userAnswer = (answerContainer.querySelector(selector) || {}).value;
-
             if (userAnswer === currentQuestion.correctAnswer) {
                 numCorrect++;
 
@@ -40,8 +39,6 @@
                 answerContainers[questionNumber].style.color = "red";
             }
         });
-
-        // show number of correct answers out of total
         resultsContainer.innerHTML = `${numCorrect} out of ${myQuestions.length}`;
     }
 
@@ -53,36 +50,47 @@
             question: "1. A sua movimentação é uma combinação da torre e do bispo.",
             answers: {
                 a: "Rei",
-                b: "Rainha"
-            },
-            correctAnswer: "b"
-        },
-        {
-            question: "2. O seu movimento forma um L e pode saltar sobre a peça que a bloqueia.",
-            answers: {
-                a: "Cavalo",
-                b: "Bispo"
-            },
-            correctAnswer: "a"
-        },
-        {
-            question: "3. Avança um quadrado, exceto quando na posição inicial, onde pode mover dois quadrados para a frente.",
-            answers: {
-                a: "Rei",
-                b: "Peão",
+                b: "Rainha",
                 c: "Torre"
             },
             correctAnswer: "b"
         },
         {
-            question: "4. Quantos quadrados tem o tabuleiro de xadrez.",
+            question: "2. O seu movimento é em L e pode saltar sobre outras peças.",
             answers: {
-                a: "50",
-                b: "56",
-                c: "64",
-                d: "62"
+                a: "Cavalo",
+                b: "Bispo",
+                c: "Rainha"
             },
-            correctAnswer: "c"
+            correctAnswer: "a"
+        },
+        {
+            question: "3. Avança um quadrado, exceto quando  está na posição inicial, onde pode mover dois quadrados para a frente.",
+            answers: {
+                a: "Rei",
+                b: "Peão",
+                c: "Bispo"
+            },
+            correctAnswer: "b"
+        },
+        {
+            question: "4. Qual destas é a mais valiosa?",
+            answers: {
+                a: "Peão",
+                b: "Torre",
+                c: "Bispo",
+                d: "Cavalo"
+            },
+            correctAnswer: "b"
+        },
+        {
+            question: "5. Qual o numero minimo de jogadas em que é possivel ganhar com o xeque-mate pastor?",
+            answers: {
+                a: "4",
+                b: "5",
+                c: "6"
+            },
+            correctAnswer: "b"
         }
     ];
 

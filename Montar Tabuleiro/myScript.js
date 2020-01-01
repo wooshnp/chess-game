@@ -1,186 +1,144 @@
-var positions = {};
 
-$(document).ready(function(){
-    var game = new Chess();
-    var board = Chessboard('myBoard');
-    var isGame = false;
-    $(".chessImage").each(function(idx,el){
-        $("#"+this.id).css("opacity","0.2");
+var game = new Chess();
+var config = {
+    draggable: true,
+    onDragStart: onDragStart,
+    onDrop: onDrop
+}
+var board = Chessboard('myBoard',config);
 
-        $("#"+this.id).click(function(){
-
-            $("#" + this.id).css("opacity", "1");
-            let peca = this.dataset.toggle;
-            let array = getArrayPelaPeca(peca);
-            if(!isGame){
-                for(let i =0; i<array.length; i++){
-                    positions[array[i]] = peca;
-                }
-                board.clear();
-                board.position(positions,true);
-                $("#"+this.id).css("background","green");
-                let contador =0;
-                $(".chessImage").each(function(idx,el){
-
-                    if(this.style.background =="green"){
-                        contador ++;
-                    }
-                });
-
-                if(contador == 12){
-                    alert("Parabéns! Ja viste como se monta o teu primeiro tabuleiro! Exprimenta agora tu!");
-                    $("#introText").text(" Clica na peça e indica onde se coloca! Faz isso até teres o tabuleiro montado!");
-                    removeGreySquares();
-                    board.clear();
-                    isGame = true;
-                }
-            }else{
-                $("#" + this.id).css("opacity", "1");
-                $("#selectedPiece").val(peca);
-                positions = {};
-            }
-        });
-        $("#"+this.id).mouseover(function(){
-            $("#" + this.id).css("opacity", "1");
-            if(!isGame) {
-                let peca = this.dataset.toggle;
-                let array = getArrayPelaPeca(peca);
-
-                for (let i = 0; i < array.length; i++) {
-                    greySquare(array[i]);
-                }
-            }else{
-
-            }
-        }).mouseout(function(){
-            if(!isGame){
-                removeGreySquares();
-            }
-
-            $(".chessImage").each(function(idx,el) {
-
-                if (el.dataset.toggle != $("#selectedPiece").val()) {
-                    $("#" + this.id).css("opacity", "0.2");
-                }else{
-                    $("#" + this.id).css("opacity", "1");
-
-                }
-
-            });
-        });
-
-    });
-    var arrayGuardarPosicao = [];
-    var arrayGuardarPeca = [];
-    $(".square-55d63").click(function(){
-
-        if($("#selectedPiece").val() != ""){
-            let quadrado = this.dataset.square;
-            let arrayPossibilidades = getArrayPelaPeca($("#selectedPiece").val());
-            let isCerto = false;
-
-            for(let j=0; j<arrayGuardarPosicao.length; j++){
-                if(arrayGuardarPosicao[j] == quadrado){
-                    alert("Ups! Parace que ja introduzis-te nesse quadrado uma peça!");
-                    return;
-                }
-            }
-            for(let i=0; i < arrayPossibilidades.length; i++){
-                if(arrayPossibilidades[i] == quadrado){
-                    isCerto = true;
-                    positions += mouseOnClickSquare(board, quadrado, $("#selectedPiece").val(), positions , arrayGuardarPosicao, arrayGuardarPeca);
-                    arrayGuardarPosicao[arrayGuardarPosicao.length] = quadrado;
-                    arrayGuardarPeca[arrayGuardarPeca.length] = $("#selectedPiece").val();
-                    //$("#selectedPiece").val("");
-                }
-            }
-
-            if(!isCerto){
-                alert("Ups, tenta novamente!");
-                return;
-            }
-
-            verificaWin(arrayGuardarPosicao);
-        }else{
-            alert("Por favor, clica primeiro numa peça!");
-        }
-        //mouseOnClickSquare(board, , selectedPiece, )
-    });
+$(document).ready(function () {
+    $("#exercicio").val(1);
+    $("#descricao").text("Olá "
+        //+ doGetValue("cmi.learner_name")
+        + ". Bem vindo à secção de Montar o tabuleiro! Como ja viste os movimentos das peças, agora vais poder montar o tabuleiro. Tens de arrastar as peças para o local correcto. Clica no botão para começar.");
+    $("#btnStart").fadeIn("slow");
 });
 
-function mouseOnClickSquare (board, square, peca, positions, historicoPosicoes, historicoPecas) {
-    positions = {};
-    positions[square] = peca;
-    for(let i =0; i<historicoPosicoes.length; i++){
-        positions[historicoPosicoes[i]] = historicoPecas[i];
-    }
-    board.position(positions,true);
-    return positions;
+$("#btnStart").click(function () {
+    // $("#btnStart").css("display","none");
+    $("#btnStart").fadeOut();
+
+    $("#descricao").text("Começa pela torre! Lembra-te que ela pode andar quantas casas quiser. Onde será que é a posição original dela?");
+
+    let exe = $("#exercicio").val();
+    montarTabuleiro(exe);
+
+});
+
+function onDragStart (source, piece, position, orientation) {
+    if (game.game_over()) return false
+
+    if (piece.search(/^b/) !== -1) return false
 }
 
 
-function getArrayPelaPeca(peca){
-    let array =[];
-    let row = 0;
-    if(peca == "wN"  || peca == "bN"){
-        row = 1;
-        if(peca == "bN"){
-            row = 8;
-        }else{
-            row = 1;
-        }
-        array = ["b"+row,"g"+row];
+function onDrop (source, target) {
+    let ex = $("#exercicio").val();
+    var arrayPossibilidade = [];
+    if (ex == 1) {
 
+        arrayPossibilidade = ["a1"];
 
+    } else if (ex == 2) {
 
-    }else if(peca == "bP"  || peca == "wP"){
-        row = 1;
-        if(peca =="bP"){
-            row = 7;
-        }else{
-            row = 2;
-        }
-        array = ["a"+row,"b"+row,"c"+row,"d"+row,"e"+row,"f"+row,"g"+row,"h"+row];
-    }else if(peca == "wR" || peca == "bR"){
-        if(peca =="wR"){
-            row = 1;
-        }else{
-            row = 8;
-        }
-        array = ["a"+row, "h"+row];
-    }else if(peca == "wB" || peca == "bB"){
-        if(peca == "wB"){
-            row = 1;
-        }else{
-            row = 8;
-        }
-        array=["c"+row, "f"+row];
-    }else if(peca == "wQ" || peca =="bQ"){
-        if(peca == "wQ"){
-            row=1;
-        }else{
-            row = 8;
-        }
-        array = ["d"+row];
-    }else if(peca == "wK" || peca == "bK"){
-        if(peca == "wK"){
-            row = 1;
-        }else{
-            row = 8;
-        }
-        array = ["e"+row];
+        arrayPossibilidade = ["h1"];
+    } else if (ex == 3) {
+
+        arrayPossibilidade = ["b1"];
+    } else if (ex == 4) {
+        arrayPossibilidade = ["g1"];
+    } else if (ex == 5) {
+        arrayPossibilidade = ["c1"];
+    }else if(ex == 6){
+        arrayPossibilidade = ["f1"];
+    }else if(ex == 7){
+        arrayPossibilidade = ["d1"];
+    }else if(ex == 8){
+        arrayPossibilidade = ["e1"];
     }
+    if (target != arrayPossibilidade[0]) {
+        $('#erroAlerta').fadeIn("slow");
+        return 'snapback';
+    } else {
+        $('#erroAlerta').fadeOut();
 
-    return array;
+        let now = parseInt($("#exercicio").val());
+        now += 1;
+        $("#exercicio").val(now);
+        var move = game.move({
+            from: source,
+            to: target,
+        });
+        montarTabuleiro(now);
+    }
 }
+function montarTabuleiro(ex) {
+    board.clear();
+    if(ex == 1){
+        board.position({"a3": "wR"});
+    }else if(ex == 2){
+        board.position({"a1": "wR", "h3": "wR"});
+        $("#descricao").text("Boa! isso mesmo! Consegues fazer o mesmo para esta?");
 
-function  verificaWin(arrayGuardadas) {
-    if(arrayGuardadas.length == 32){
-        alert("Parabens! Montas-te o teu primeiro tabuleiro!!!!");
+        $("#descPercentagem").text("12.5%");
+        $("#progress-bar").css("width", "12.5%");
+    }else if(ex == 3){
+        board.position({"a1": "wR", "h1": "wR", "a3": "wN"});
+        $("#descricao").text("Agora é a vez dos cavalos! Lembra-te que andam de uma forma especial... em 'L'.");
+
+        $("#descPercentagem").text("25%");
+
+        $("#progress-bar").css("width", "25%");
+    }else if(ex == 4){
+        board.position({"a1": "wR", "h1": "wR", "b1": "wN", "h3": "wN"});
+        $("#descricao").text("Correcto! Agora a mesma coisa deste lado.");
+
+        $("#descPercentagem").text("37.5%");
+        $("#progress-bar").css("width", "37.5%");
+    }else if(ex == 5){
+        board.position({"a1": "wR", "h1": "wR", "b1": "wN", "g1": "wN", "f4" :"wB"});
+        $("#descricao").text("Agora é a vez dos bispos. Encontra a casa original deles.");
+
+        $("#descPercentagem").text("50%");
+
+        $("#progress-bar").css("width", "50%");
+    }else if(ex == 6){
+        $("#descricao").text("Boa! isso mesmo! Consegues fazer o mesmo para esta?");
+
+        board.position({"a1": "wR", "h1": "wR", "b1": "wN", "g1": "wN", "c4": "wB"});
+
+        $("#descPercentagem").text("62.5%");
+
+        $("#progress-bar").css("width", "62.5%");
+    }else if(ex == 7){
+        board.position({"a1": "wR", "h1": "wR", "b1": "wN", "g1": "wN", "c1" :"wB", "f1": "wB", "d3" : "wQ"});
+        $("#descricao").text("Chegou a vez da Rainha. Consegues encontrar a casa original?");
+
+        $("#descPercentagem").text("75%");
+
+        $("#progress-bar").css("width", "75%");
+    }else if(ex == 8){
+        board.position({"a1": "wR", "h1": "wR", "b1": "wN", "g1": "wN", "c1" :"wB", "f1": "wB", "d1" : "wQ", "e2" : "wK"});
+
+        $("#descPercentagem").text("87.5%");
+        $("#descricao").text("Por fim o Rei. Encontra a casa original do rei.");
+
+        $("#progress-bar").css("width", "87.5%");
+    }else{
+        $("#descricao").text("Agora so faltavam os peões que ficam na primeira fila.");
+        config = {
+            position: "start",
+            draggable: false
+        };
+        Chessboard('myBoard',config);
+
+        // $('#sucessoAlerta').attr("hidden", false);
+        $('#sucessoAlerta').fadeIn("slow");
+
+        $("#descPercentagem").text("100%");
+
+        $("#progress-bar").css("width", "100%");
         return;
     }
-
-
 }
-
-

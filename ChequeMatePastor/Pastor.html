@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Movimentos - ChessEst</title>
+    <script type="text/javascript" src="jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="bootstrap.js"></script>
+    <script type="text/javascript" src="bootstrap.min.js"></script>
+    <script type="text/javascript" src="chessboard-1.0.0.js"></script>
+    <script type="text/javascript" src="Chess.js"></script>
+    <!--script type="text/javascript" src="SCORM_2004_APIWrapper.js"></script-->
+
+    <link rel="stylesheet" type="text/css" href="bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="chessboard-1.0.0.css">
+    <link rel="stylesheet" type="text/css" href="myStyle.css">
+</head>
+<body> <!--onload="doInitialize()" onunload ="doTerminate()"-->
+
+<div class="row">
+    <h1></h1>
+</div>
+
+<div class="row" style="text-align: center;">
+    <div class="col-lg-3 col-xs-3" align="center">
+        <div class="row">
+            <h4 id="dica"></h4>
+        </div>
+    </div>
+    <div class="col-lg-6 col-xs-6" align="center">
+        <div id="myBoard" name="myBoard" style="width: 450px"></div>
+    </div>
+    <div class="col-lg-3 col-xs-3" align="center" style="margin-left: -50px;">
+        <div class="row">
+            <div class="alert alert-success" role="alert" id="sucessoAlerta" hidden>
+                <h4 class="alert-heading">Muito bem!</h4>
+                <p1 class="mb-0">Conseguiste Superar este desafio</p1>
+            </div>
+            <div class="alert alert-danger" role="alert" id="erroAlerta" hidden>
+                <h4 class="alert-heading">Ups!!</h4>
+                <p1 class="mb-0">Tenta novamente!</p1>
+            </div>
+        </div>
+        <div class="row">
+            <h1 id="title">Cheque-mate Pastor!</h1>
+        </div>
+        <div class="row">
+            <p id="descricao">Nesta secção vais aprender a vencer o jogo em apenas 5 movimentos</p>
+            <button type="button" class="btn btn-warning" id="btnStart">Começar</button>
+            <button id="btn_dica" type="button" class="btn btn-warning" style="display: none;">Dica</button>
+
+        </div>
+
+    </div>
+
+</div>
+<input type="hidden" id="jogada">
+<script>
+
+    var game = new Chess();
+    var config = {
+        draggable: true,
+        onDragStart: onDragStart,
+        onDrop: onDrop
+    }
+    var whiteSquareRed = '#ffadad';
+    var blackSquareRed = '#fc7272';
+
+    var board = Chessboard('myBoard', config);
+
+    $("#btnStart").click(function () {
+
+        $("#btnStart").fadeOut();
+        $("#title").text("");
+        $("#descricao").text("Vamos começar a jogar. Inicializa uma jogada para abrir caminho a rainha e ao bispo. Sabes qual é?");
+        $("#jogada").val(1);
+        config = {
+            draggable: true,
+            onDragStart: onDragStart,
+            onDrop: onDrop,
+            position: 'start'
+        }
+        board = Chessboard('myBoard',config);
+
+    });
+
+    $("#btn_dica").click(function () {
+       let jogada = parseInt($("#jogada").val());
+       if(jogada == 1){
+            $("#dica").text("Move o peão de e2 para e4.");
+       }else if(jogada == 2){
+           $("#dica").text("Move o bispo de f1 para c4.");
+       }else if(jogada == 3){
+           $("#dica").text("Move a rainha de d1 para h5.");
+       }else if( jogada == 4){
+           $("#dica").text("Move a rainha para f7. Xeque-mate.");
+       }
+    });
+
+    function onDragStart (source, piece, position, orientation) {
+        if (game.game_over()) return false
+
+        if (piece.search(/^b/) !== -1) return false
+    }
+
+
+    function onDrop (source, target) {
+        let jogada = parseInt($("#jogada").val());
+        let possibilidades = [];
+        let origem = "";
+        if(jogada == 1){
+            possibilidades = ["e4"];
+            origem = "e2";
+        }else if(jogada == 2){
+            possibilidades = ["c4"];
+            origem = "f1";
+        }else if(jogada == 3){
+            possibilidades = ["h5"];
+            origem = "d1";
+        }else if(jogada == 4){
+            possibilidades = ["f7"];
+            origem = "h5";
+        }
+
+        if(possibilidades[0] != target || source != origem){
+            $('#erroAlerta').fadeIn("slow");
+            $("#btn_dica").fadeIn("slow");
+            return 'snapback';
+        }else{
+            $('#erroAlerta').fadeOut();
+            var move = game.move({
+                from: source,
+                to: target,
+            });
+            movePretas(jogada);
+        }
+    }
+
+
+
+    function movePretas(jogada) {
+        $("#dica").text("");
+        $("#btn_dica").fadeOut("slow");
+        if(jogada == 1){
+            $("#descricao").text("Boa! Essa e a primeira jogada. Peão E4.");
+
+            setTimeout(function () {
+                board.move('e7-e5');
+                $("#descricao").text("As peças pretas jogaram Peão E5, agora temos de atacar a casa assinalada. Coloca o bispo a atacar esta casa!");
+                redSquare("f7");
+                $("#jogada").val(2);
+            },3000);
+        }else if(jogada == 2){
+            $("#descricao").text("Boa! Isso mesmo. Bispo C4.");
+
+            setTimeout(function () {
+                removeRedSquares();
+                board.move('b8-c6');
+                $("#descricao").text("As peças pretas jogaram Cavalo C6, agora temos de continuar a atacar a casa assinalada. A Rainha a atacar esta casa!");
+
+                $("#jogada").val(3);
+            },3000);
+
+        }else if(jogada == 3){
+            $("#descricao").text("Boa! Isso mesmo. Rainha H5.");
+
+            setTimeout(function () {
+                board.move('g8-f6');
+                $("#descricao").text("As peças pretas jogaram Cavalo D6 para te atacar a rainha, Consegues ver o xeque-mate?");
+                $("#jogada").val(4);
+            },3000);
+        }else if(jogada == 4){
+            $("#sucessoAlerta").fadeIn("slow");
+            $("#descricao").text("Optimo! Xeque-mate!");
+
+        }
+    }
+
+    function removeRedSquares () {
+        $('#myBoard .square-55d63').css('background', '')
+    }
+
+    function redSquare (square) {
+        var $square = $('#myBoard .square-' + square)
+
+        var background = whiteSquareRed;
+        if ($square.hasClass('black-3c85d')) {
+            background = blackSquareRed;
+        }
+
+        $square.css('background', background)
+    }
+
+</script>
