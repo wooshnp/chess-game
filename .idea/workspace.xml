@@ -24,16 +24,16 @@
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/ChequeMatePastor" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/Exercicios Xequemate" />
     <property name="nodejs_package_manager_path" value="npm" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\mauro\OneDrive\Documentos\GitHub\chess-game\Exercicios Xequemate" />
       <recent name="C:\Users\mauro\OneDrive\Documentos\GitHub\chess-game\ChequeMatePastor" />
       <recent name="C:\Users\mauro\OneDrive\Documentos\GitHub\chess-game\Questionario" />
       <recent name="C:\Users\mauro\OneDrive\Documentos\GitHub\chess-game\Movimentos" />
       <recent name="C:\Users\mauro\OneDrive\Documentos\GitHub\chess-game\Montar Tabuleiros" />
-      <recent name="C:\Users\mauro\OneDrive\Documentos\GitHub\chess-game\Montar Tabuleiro" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -65,6 +65,7 @@
       <workItem from="1577576704846" duration="2185000" />
       <workItem from="1577782915381" duration="9696000" />
       <workItem from="1577806911414" duration="2371000" />
+      <workItem from="1577909265886" duration="9804000" />
     </task>
     <servers />
   </component>

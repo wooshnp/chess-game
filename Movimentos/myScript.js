@@ -1,11 +1,11 @@
 
 var config = {
     position: 'start'
-}
+};
 var game = new Chess();
 var board = Chessboard('myBoard');
-var whiteSquareGrey = '#a9a9a9'
-var blackSquareGrey = '#696969'
+var whiteSquareGrey = '#a9a9a9';
+var blackSquareGrey = '#696969';
 
 
 $(document).ready(function(){
@@ -26,7 +26,7 @@ $(document).ready(function(){
             for(let i=0; i<array.length; i++){
                 let lPeca = "w"+this.dataset.toggle;
                 positions[array[i]] = lPeca;
-                validaMovimentos(array[i], lPeca)
+                validaMovimentos(array[i], lPeca);
 
             }
             peca = "b" + this.dataset.toggle;
@@ -57,11 +57,7 @@ $(document).ready(function(){
 
                 int2 = setInterval(function () {
                     board.move("f7-f5");
-
-
                     board.move("f2-f3");
-
-
                     removeGreySquares();
                 },5000);
 

@@ -5,15 +5,16 @@
     <meta charset="UTF-8">
     <title>Questionário - ChessEst</title>
     <script type="text/javascript" src="jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="SCORM_2004_APIWrapper.js"></script>
     <link rel="stylesheet" type="text/css" href="myStyle.css">
+
 </head>
-<body>
+<body onload="doInitialize()" onunload ="doTerminate()">
 <h1 style="text-align: center; color: white;">Perguntas</h1>
 <div id="quiz"></div>
 <button id="submit">Terminar</button>
 <div id="results"></div>
 
 <script type="text/javascript" src="quiz.js"></script>
-
 </body>
 </html>

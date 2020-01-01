@@ -1,3 +1,4 @@
+var pontuacaoTotal;
 (function() {
     function buildQuiz() {
         const output = [];
@@ -26,20 +27,25 @@
         const answerContainers = quizContainer.querySelectorAll(".answers");
 
         let numCorrect = 0;
-
+        let pontuacaoTotal =0;
         myQuestions.forEach((currentQuestion, questionNumber) => {
             const answerContainer = answerContainers[questionNumber];
             const selector = `input[name=question${questionNumber}]:checked`;
             const userAnswer = (answerContainer.querySelector(selector) || {}).value;
             if (userAnswer === currentQuestion.correctAnswer) {
                 numCorrect++;
-
+                pontuacaoTotal += 20;
                 answerContainers[questionNumber].style.color = "lightgreen";
             } else {
                 answerContainers[questionNumber].style.color = "red";
             }
         });
+        SetValue("cmi.core.score.raw", pontuacaoTotal);
+        SetValue("cmi.core.score.min", "0");
+        SetValue("cmi.core.score.max", "100");
+        SetValue("cmi.core.lesson_status", "completed");
         resultsContainer.innerHTML = `${numCorrect} out of ${myQuestions.length}`;
+        Commit();
     }
 
     const quizContainer = document.getElementById("quiz");
